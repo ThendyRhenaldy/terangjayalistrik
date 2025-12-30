@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Produk - Terang Jaya Listrik</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Core site CSS (keputusan: biarkan ada, kita override di bawah) -->
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <style>
+    /* ===== Page-specific clean CSS (paling bawah supaya override) ===== */
+
+    body { background: linear-gradient(135deg,#0a0f2c,#1e2b4a); color: #fff; }
+
+    /* Sidebar */
+    .filter-box { background: rgba(255,255,255,0.04); border-radius:12px; padding:18px; border:1px solid rgba(255,255,255,0.06); }
+
+    /* Grid / List containers purposely use unique IDs to avoid conflicts */
+    #pj-product-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(240px,1fr)); gap:18px; }
+    #pj-product-list { display: none; } /* hidden until list view selected */
+
+    /* card style */
+    .pj-card {
+      background: rgba(255,255,255,0.03);
+      border-radius: 12px;
+      padding: 12px;
+      color: #fff;
+      height: 100%;
+      display:flex;
+      flex-direction:column;
+      gap:8px;
+    }
+    .pj-thumb { width:100%; height:160px; object-fit:cover; border-radius:8px; background:#fff; }
+
+    /* list row */
+    .pj-list-row {
+      display:flex; gap:18px; align-items:center;
+      background: rgba(255,255,255,0.03); padding:12px; border-radius:10px;
+    }
+    .pj-list-thumb { width:140px; height:100px; object-fit:cover; border-radius:8px; flex-shrink:0; }
+
+    .pj-meta { color: rgba(255,255,255,0.75); font-size:0.92rem; margin-bottom:6px; }
+    .pj-desc { color: rgba(255,255,255,0.6); font-size:0.9rem; }
+
+    /* actions */
+    .pj-actions { margin-top:auto; display:flex; gap:8px; justify-content:flex-end; align-items:center; }
+    .pj-actions .btn-wa { background:#ffc107; color:#111; border:none; padding:8px 12px; border-radius:8px; font-weight:700; text-decoration:none; }
+    .pj-actions .btn-wa:hover { background:#e4ad06; }
+
+    /* view toggle active */
+    .view-toggle .btn.active { background:#ffc107; color:#111; border-color:#e0a800; }
+
+    /* responsive */
+    @media (max-width: 768px) {
+      #pj-product-grid { grid-template-columns: repeat(2,1fr); }
+      .pj-list-row { flex-direction:column; align-items:flex-start; }
+      .pj-actions { justify-content:flex-start; width:100%;}
+    }
+    @media (max-width: 480px) {
+      #pj-product-grid { grid-template-columns: 1fr; }
+    }
+
+    /* small helper */
+    .pj-muted { color: rgba(255,255,255,0.75); font-size:0.95rem; }
+  </style>
+</head>
+<body>
+
+<!-- NAVBAR (gunakan navbar yang sudah ada di project) -->
+<nav class="navbar navbar-expand-lg navbar-dark py-3">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="assets/images/tjl_logo.png" alt="Logo" style="width:44px;height:auto;" class="me-2">
+      <span class="fw-bold">Terang Jaya Listrik</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+        <li class="nav-item"><a class="nav-link active" href="products.html">Produk</a></li>
+        <li class="nav-item"><a class="nav-link" href="contact.html">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section style="padding:100px 0 40px;">
+  <div class="container text-light">
+    <h1 class="display-5 fw-bold mb-2">Katalog Produk</h1>
+    <p class="lead mb-0">Temukan kebutuhan listrik terbaik untuk rumah, toko, dan proyek Anda.</p>
+  </div>
+</section>
+
+<!-- MAIN CONTENT -->
+<div class="container my-4">
+  <div class="row g-4">
+
+    <!-- SIDEBAR -->
+    <aside class="col-lg-3">
+      <div class="filter-box">
+        <label class="form-label fw-bold text-white">Cari Produk</label>
+        <input id="pj-search" class="form-control mb-3" placeholder="Cari nama produk..." type="search">
+
+        <div class="mb-3">
+          <div class="fw-bold text-white">Kategori</div>
+          <div id="pj-category"></div>
+        </div>
+
+        <div class="mb-3">
+          <div class="fw-bold text-white">Brand</div>
+          <div id="pj-brand"></div>
+        </div>
+
+        <div class="mb-3">
+          <div class="fw-bold text-white">Watt</div>
+          <div id="pj-watt"></div>
+        </div>
+
+        <div class="mb-3">
+          <label class="form-label fw-bold text-white">Sort</label>
+          <select id="pj-sort" class="form-select">
+            <option value="new">Terbaru</option>
+            <option value="name_asc">Nama A–Z</option>
+            <option value="name_desc">Nama Z–A</option>
+          </select>
+        </div>
+
+        <div class="d-grid">
+          <button id="pj-reset" class="btn btn-outline-light">Reset Filter</button>
+        </div>
+      </div>
+    </aside>
+
+    <!-- PRODUCTS -->
+    <main class="col-lg-9">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <div class="pj-muted">Menampilkan <span id="pj-count">0</span> produk</div>
+        <div class="view-toggle btn-group" role="group">
+          <button id="pj-grid-btn" type="button" class="btn btn-sm btn-light">Grid</button>
+          <button id="pj-list-btn" type="button" class="btn btn-sm btn-light">List</button>
+        </div>
+      </div>
+
+      <!-- grid & list placeholders -->
+      <div id="pj-product-grid" aria-live="polite"></div>
+      <div id="pj-product-list"></div>
+
+      <div id="pj-empty" class="mt-4" style="display:none;color:#fff;">Tidak ditemukan produk.</div>
+    </main>
+
+  </div>
+</div>
+
+<!-- footer tetap sama -->
+<footer class="footer pt-5 pb-4">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4 text-start">
+        <img src="assets/images/tjl_logo.png" class="footer-logo-big mb-3" alt="TJL Logo">
+        <p class="text-light small">Menyediakan berbagai kebutuhan alat listrik untuk rumah, toko, dan proyek dengan kualitas terbaik.</p>
+      </div>
+      <div class="col-md-2 mb-4">
+        <h6 class="fw-bold text-white mb-3">Menu</h6>
+        <ul class="list-unstyled footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="products.html">Produk</a></li>
+          <li><a href="about.html">Tentang Kami</a></li>
+          <li><a href="contact.html">Kontak</a></li>
+        </ul>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold text-white mb-3">Kontak</h6>
+        <p class="text-light small mb-1">WhatsApp: 081274377963</p>
+        <p class="text-light small mb-1">Alamat Toko: Jl. Duta Raya Blok F2 No.22 (Kios B), Taman Cibodas, Tangerang</p>
+      </div>
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold text-white mb-3">Ikuti Kami</h6>
+        <div class="d-flex flex-column gap-3">
+          <a href="https://www.instagram.com/toko.terangjayalistrik/" target="_blank" class="footer-social d-flex align-items-center gap-2">
+            <img src="assets/images/instagramlogo.png" class="footer-sosmed-icon" alt="Instagram"><span class="text-white">Instagram</span>
+          </a>
+          <a href="https://wa.me/6281274377963" target="_blank" class="footer-social d-flex align-items-center gap-2">
+            <img src="assets/images/whatsapplogo.png" class="footer-sosmed-icon" alt="WhatsApp"><span class="text-white">WhatsApp</span>
+          </a>
+
+          <!-- Shopee -->
+          <a href="https://shopee.co.id/thendy_rhenaldy" target="_blank" class="footer-social d-flex align-items-center gap-2">
+            <img src="assets/images/shopeelogo.png" alt="Shopee" class="footer-sosmed-icon">
+            <span class="text-white">Shopee</span>
+          </a>
+        </div>
+      </div>
+    </div>
+    <div class="text-center text-light mt-4 small">© 2025 Terang Jaya Listrik. All Rights Reserved.</div>
+  </div>
+</footer>
+
+
+
+<!-- Bootstrap JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- JS: render + filter + toggle (self-contained, reads productsData below) -->
+<script>
+/* ========== DATA ========== */
+const productsData = [
+  { id:1, name:'Lampu Luby Classic 5W', category:'Lampu', brand:'Luby', watt:'5W', color:'Cool White', img:'assets/images/lubyclassic/5w.jpg', desc:'Tersedia 5W, 7W, 9W, 12W, 15W, 18W, 24W, 30W, 40W dan 50W' },
+  { id:2, name:'Lampu LED 5W', category:'Lampu', brand:'MyLED', watt:'5W', color:'Cool White', img:'assets/images/myled/5w.jpg', desc:'Tersedia 5W, 10W, 15W, 20W, 30W, 40W.' },
+  { id:3, name:'Lampu Philips MyCare', category:'Lampu', brand:'Philips', watt:'8W', color:'Cool White', img:'assets/images/philips/8w.jpeg', desc:'Tersedia 4W, 6W, 8W, 10W, 12W, 14.5W, dan 19W.' },
+  { id:4, name:'Kabel Tembaga NYM 2 X 1.5 mm', category:'Kabel', brand:'Valpro', watt:'-', color:'-', img:'assets/images/kabel/valpro_tembaga.png', desc:'Kabel Tembaga NYM 2 X 1.5 mm untuk instalasi rumah.' },
+  { id:5, name:'Kipas Angin Berdiri Rinrei 16"', category:'Kipas Angin Berdiri', brand:'Rinrei', watt:'40W', color:'-', img:'assets/images/kipastumpu/rinrei.webp', desc:'Kipas angin berdiri rinrei 16 inch, 3 kecepatan.' },
+  { id:6, name:'Kipas Angin Dinding Cosmos 16"', category:'Kipas Angin Dinding', brand:'Cosmos', watt:'45W', color:'-', img:'assets/images/kipasdinding/cosmos.jpeg', desc:'Kipas angin dinding cosmos 16 inch, 3 kecepatan, hemat tempat.' },
+  { id:7, name:'Setrika Listrik MASPION EX-1000', category:'Setrika', brand:'Maspion', watt:'350W', color:'-', img:'assets/images/setrika/maspion.jpg', desc:'Setrika listrik maspion efisien untuk pakaian rapi.' },
+  { id:8, name:'Blender MIYAKO BL-101 PL', category:'Blender', brand:'Miyako', watt:'350W', color:'-', img:'assets/images/blender/miyako.jpg', desc:'Blender Miyako, multi fungsi 3in1 untuk dapur.' },
+  { id:9, name:'Magiccom Miyako MCM-508', category:'Magiccom', brand:'Miyako', watt:'-', color:'-', img:'assets/images/magiccom/miyako1.png', desc:'Magiccom/Ricecooker kuat, aman, dan tahan lama.' },
+  { id:10, name:'Teko Listrik Lumment', category:'Teko Listrik', brand:'Lumment', watt:'-', color:'-', img:'assets/images/tekolistrik/tekolument.jpg', desc:'Teko Listrik Lumment, kualitas ketahanan suhu premium, kapasitas 2 Liter' }
+];
+
+/* ========== derive lists ========== */
+const categories = [...new Set(productsData.map(p=>p.category))].sort();
+const brands = [...new Set(productsData.map(p=>p.brand))].sort();
+const watts = [...new Set(productsData.map(p=>p.watt).filter(w=>w && w!=='-'))].sort();
+
+/* ========== DOM refs ========== */
+const PJ = {
+  search: document.getElementById('pj-search'),
+  cat: document.getElementById('pj-category'),
+  brand: document.getElementById('pj-brand'),
+  watt: document.getElementById('pj-watt'),
+  sort: document.getElementById('pj-sort'),
+  reset: document.getElementById('pj-reset'),
+  count: document.getElementById('pj-count'),
+  gridHolder: document.getElementById('pj-product-grid'),
+  listHolder: document.getElementById('pj-product-list'),
+  empty: document.getElementById('pj-empty'),
+  gridBtn: document.getElementById('pj-grid-btn'),
+  listBtn: document.getElementById('pj-list-btn')
+};
+
+/* ========== state ========== */
+let pjState = { q:'', cats:new Set(), brands:new Set(), watts:new Set(), sort:'new', view:'grid' };
+
+/* ========== render filter checkboxes ========== */
+function pjRenderFilters(){
+  PJ.cat.innerHTML = categories.map(c=>`
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="${c}" id="pj-cat-${c}">
+      <label class="form-check-label text-white" for="pj-cat-${c}">${c}</label>
+    </div>`).join('');
+
+  PJ.brand.innerHTML = brands.map(b=>`
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="${b}" id="pj-brand-${b}">
+      <label class="form-check-label text-white" for="pj-brand-${b}">${b}</label>
+    </div>`).join('');
+
+  PJ.watt.innerHTML = watts.map(w=>`
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" value="${w}" id="pj-watt-${w}">
+      <label class="form-check-label text-white" for="pj-watt-${w}">${w}</label>
+    </div>`).join('');
+}
+
+/* ========== bind events ========== */
+function pjBind(){
+  PJ.search.addEventListener('input', e=>{ pjState.q = e.target.value.trim().toLowerCase(); pjApply(); });
+  PJ.sort.addEventListener('change', e=>{ pjState.sort = e.target.value; pjApply(); });
+  PJ.reset.addEventListener('click', ()=>{ pjState.q=''; pjState.cats.clear(); pjState.brands.clear(); pjState.watts.clear(); PJ.search.value=''; PJ.sort.value='new'; document.querySelectorAll('.filter-box input[type=checkbox]').forEach(i=>i.checked=false); pjApply(); });
+
+  PJ.cat.addEventListener('change', e=>{
+    if(!e.target.matches('input[type="checkbox"]')) return;
+    if(e.target.checked) pjState.cats.add(e.target.value); else pjState.cats.delete(e.target.value);
+    pjApply();
+  });
+  PJ.brand.addEventListener('change', e=>{
+    if(!e.target.matches('input[type="checkbox"]')) return;
+    if(e.target.checked) pjState.brands.add(e.target.value); else pjState.brands.delete(e.target.value);
+    pjApply();
+  });
+  PJ.watt.addEventListener('change', e=>{
+    if(!e.target.matches('input[type="checkbox"]')) return;
+    if(e.target.checked) pjState.watts.add(e.target.value); else pjState.watts.delete(e.target.value);
+    pjApply();
+  });
+
+  PJ.gridBtn.addEventListener('click', ()=>{ pjState.view='grid'; renderProducts(pjFiltered()); PJ.gridBtn.classList.add('active'); PJ.listBtn.classList.remove('active'); });
+  PJ.listBtn.addEventListener('click', ()=>{ pjState.view='list'; renderProducts(pjFiltered()); PJ.listBtn.classList.add('active'); PJ.gridBtn.classList.remove('active'); });
+}
+
+/* ========== filter logic ========== */
+function pjFiltered(){
+  let list = productsData.filter(p=>{
+    if(pjState.q){
+      if(!p.name.toLowerCase().includes(pjState.q) && !p.desc.toLowerCase().includes(pjState.q)) return false;
+    }
+    if(pjState.cats.size>0 && !pjState.cats.has(p.category)) return false;
+    if(pjState.brands.size>0 && !pjState.brands.has(p.brand)) return false;
+    if(pjState.watts.size>0 && !(p.watt && pjState.watts.has(p.watt))) return false;
+    return true;
+  });
+
+  if(pjState.sort==='name_asc') list.sort((a,b)=>a.name.localeCompare(b.name));
+  else if(pjState.sort==='name_desc') list.sort((a,b)=>b.name.localeCompare(a.name));
+  PJ.count.textContent = list.length;
+  return list;
+}
+
+/* ========== render products ========== */
+function renderProducts(list){
+  PJ.gridHolder.innerHTML = '';
+  PJ.listHolder.innerHTML = '';
+
+  if(!list.length){
+    PJ.empty.style.display='block';
+    PJ.gridHolder.style.display='none';
+    PJ.listHolder.style.display='none';
+    return;
+  }
+
+  PJ.empty.style.display='none';
+
+  // GRID VIEW
+  if(pjState.view === 'grid'){
+    PJ.gridHolder.style.display='grid';
+    PJ.listHolder.style.display='none';
+
+    list.forEach(p=>{
+      const col = document.createElement('div');
+      col.className = 'pj-col';
+
+      col.innerHTML = `
+        <div class="pj-card">
+          <img src="${p.img}" alt="${p.name}" class="pj-thumb" onclick="openImageModal('${p.img}')">
+
+          <div>
+            <div class="fw-bold">${p.name}</div>
+            <div class="pj-meta">${p.brand} • ${p.category} ${p.watt && p.watt!=='-'? '• '+p.watt : ''}</div>
+            <div class="pj-desc">${p.desc}</div>
+          </div>
+
+          <div class="pj-actions">
+            <a class="btn-wa" target="_blank"
+              href="https://wa.me/6281274377963?text=Saya%20tertarik%20dengan%20produk%20${encodeURIComponent(p.name)}">
+              Chat WhatsApp
+            </a>
+          </div>
+        </div>
+      `;
+
+      PJ.gridHolder.appendChild(col);
+    });
+
+  } else {
+    // LIST VIEW
+    PJ.gridHolder.style.display='none';
+    PJ.listHolder.style.display='block';
+
+    list.forEach(p=>{
+      const row = document.createElement('div');
+      row.className = 'pj-list-row';
+
+      row.innerHTML = `
+        <img src="${p.img}" class="pj-list-thumb" alt="${p.name}" onclick="openImageModal('${p.img}')">
+
+        <div style="flex:1">
+          <div class="fw-bold">${p.name}</div>
+          <div class="pj-meta">${p.brand} • ${p.category} ${p.watt && p.watt!=='-'? '• '+p.watt : ''}</div>
+          <div class="pj-desc">${p.desc}</div>
+        </div>
+
+        <div style="margin-left:12px; text-align:right">
+          <div class="pj-muted mb-2">Harga: Hubungi WhatsApp</div>
+          <a class="btn-wa" target="_blank"
+            href="https://wa.me/6281274377963?text=Saya%20tertarik%20dengan%20produk%20${encodeURIComponent(p.name)}">
+            Chat WhatsApp
+          </a>
+        </div>
+      `;
+
+      PJ.listHolder.appendChild(row);
+    });
+  }
+}
+
+
+/* ========== init ========== */
+function pjInit(){
+  pjRenderFilters();      // render checkbox
+  pjBind();               // pasang semua event listener
+  pjApply();              // langsung render produk pertama kali
+  PJ.gridBtn.classList.add('active'); // aktifkan tombol Grid default
+}
+
+/* ========== apply filter ========== */
+function pjApply(){
+  const list = pjFiltered();
+  renderProducts(list);
+}
+
+/* ========== run AFTER everything loaded ========== */
+document.addEventListener('DOMContentLoaded', pjInit);
+
+
+// show image zoom in modal
+function openImageModal(src) {
+  const modalImg = document.getElementById('zoomedImage');
+  modalImg.src = src;
+
+  const zoomModal = new bootstrap.Modal(document.getElementById('productZoomModal'));
+  zoomModal.show();
+}
+
+</script>
+
+<!-- Product Image Modal -->
+<div class="modal fade" id="productZoomModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-lg">
+    <div class="modal-content bg-dark">
+      <div class="modal-body p-0 position-relative">
+        <img id="zoomedImage" src="" class="img-fluid w-100" alt="Product">
+        <button type="button" class="btn btn-light position-absolute top-0 end-0 m-2" data-bs-dismiss="modal">
+          ✕
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

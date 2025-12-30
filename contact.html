@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hubungi Kami - Terang Jaya Listrik</title>
+
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="assets/css/style.css"> <!-- gunakan style utama -->
+
+  <style>
+    /* =============================
+       KHUSUS CONTACT PAGE
+       ============================= */
+
+    .contact-hero {
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      background: linear-gradient(135deg, #0d1b2a, #1b263b, #415a77);
+      padding: 80px 0;
+      color: white;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+
+    .contact-box {
+      background: white;
+      border-radius: 15px;
+      padding: 25px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      border: 1px solid #eee;
+    }
+
+    .contact-label {
+      font-weight: 600;
+      margin-bottom: 5px;
+    }
+
+    .contact-info-box {
+      background: #f8f9fa;
+      border-radius: 15px;
+      padding: 25px;
+      border: 1px solid #ddd;
+    }
+
+    iframe {
+      border-radius: 12px;
+      width: 100%;
+      height: 280px;
+      border: none;
+    }
+
+    .btn-warning-custom {
+      background: #ffc107;
+      font-weight: 600;
+      padding: 10px 18px;
+      border-radius: 8px;
+      width: 100%;
+    }
+
+  </style>
+
+</head>
+<body>
+
+<!-- =========================================
+     NAVBAR (SAMA PERSIS DENGAN PRODUCT.HTML)
+     ========================================= -->
+<nav class="navbar navbar-expand-lg navbar-dark py-3">
+  <div class="container">
+
+    <a class="navbar-brand d-flex align-items-center" href="#">
+      <img src="assets/images/tjl_logo.png" alt="Logo" class="navbar-logo me-2">
+      <span class="fw-bold">Terang Jaya Listrik</span>
+    </a>
+
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link" href="about.html">Tentang Kami</a></li>
+        <li class="nav-item"><a class="nav-link" href="products.html">Produk</a></li>
+        <li class="nav-item"><a class="nav-link active" href="contact.html">Kontak</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<!-- =========================================
+     HERO (SAMA PERSIS SEPERTI PRODUCT.HTML)
+     ========================================= -->
+<section class="contact-hero">
+  <div class="container text-center text-light">
+    <h1 class="display-5 fw-bold">Hubungi Kami</h1>
+    <p class="lead mt-3">
+      Butuh bantuan, ingin bertanya produk, atau konsultasi proyek?
+      Kami siap membantu Anda.
+    </p>
+  </div>
+</section>
+
+<!-- =========================================
+     MAIN CONTACT SECTION
+     ========================================= -->
+<div class="container py-5">
+  <div class="row g-4">
+
+    <!-- FORM (KIRI) -->
+    <div class="col-lg-6">
+      <div class="contact-box">
+
+        <h4 class="fw-bold mb-3">Formulir Kontak</h4>
+
+        <form>
+
+          <label class="contact-label">Nama Lengkap</label>
+          <input type="text" class="form-control mb-3" placeholder="Nama Anda">
+
+          <label class="contact-label">Email</label>
+          <input type="email" class="form-control mb-3" placeholder="Email Anda">
+
+          <label class="contact-label">Kategori Pesan</label>
+          <select class="form-select mb-3">
+            <option>Sales</option>
+            <option>Support</option>
+            <option>Proyek</option>
+          </select>
+
+          <label class="contact-label">Pesan</label>
+          <textarea class="form-control mb-3" rows="4" placeholder="Tuliskan pesan Anda..."></textarea>
+
+          <button class="btn btn-warning-custom">Kirim Pesan</button>
+
+        </form>
+
+      </div>
+    </div>
+
+    <!-- INFO / MAPS (KANAN) -->
+    <div class="col-lg-6">
+      <div class="contact-info-box">
+
+        <h4 class="fw-bold mb-3">Informasi Kontak</h4>
+
+        <p class="mb-2"><strong>Telepon:</strong> 081274377963</p>
+        <p class="mb-2"><strong>WhatsApp:</strong> <a href="https://wa.me/6281274377963" class="text-decoration-none">081274377963</a></p>
+        <p class="mb-2"><strong>Email:</strong> terangjayalistrik12@gmail.com</p>
+
+        <p class="mb-2"><strong>Alamat:</strong><br>
+        Jl. Duta Raya Blok F2 No.22 (Kios B), Taman Cibodas, Tangerang</p>
+
+        <p class="mb-3"><strong>Jam Operasional:</strong><br>
+        Senin – Minggu: 09.00 – 21.00</p>
+
+        <h6 class="fw-bold mt-4 mb-2">Lokasi di Google Maps</h6>
+
+        <!-- MAPS PLACEHOLDER -->
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.616367417966!2d106.59691527453064!3d-6.182071560573035!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69ff001d8ef8ff%3A0x450750587b1e80b4!2sTerang%20Jaya%20Listrik!5e0!3m2!1sen!2sid!4v1765390486719!5m2!1sen!2sid" 
+        width="600" 
+        height="450" 
+        style="border:0;" 
+        allowfullscreen="" 
+        loading="lazy" 
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- =========================================
+     FOOTER — TETAP SAMA DENGAN PRODUCT.HTML
+     ========================================= -->
+<footer class="footer pt-5 pb-4">
+  <div class="container">
+    <div class="row">
+
+      <!-- LOGO -->
+      <div class="col-md-4 mb-4 text-start">
+        <img src="assets/images/tjl_logo.png" alt="TJL Logo" class="footer-logo-big mb-3">
+        <p class="text-light small">
+          Menyediakan berbagai kebutuhan alat listrik untuk rumah, toko,
+          dan proyek dengan kualitas terbaik.
+        </p>
+      </div>
+
+      <!-- MENU -->
+      <div class="col-md-2 mb-4">
+        <h6 class="fw-bold text-white mb-3">Menu</h6>
+        <ul class="list-unstyled footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="products.html">Produk</a></li>
+          <li><a href="about.html">Tentang Kami</a></li>
+          <li><a href="contact.html">Kontak</a></li>
+        </ul>
+      </div>
+
+      <!-- KONTAK -->
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold text-white mb-3">Kontak</h6>
+        <p class="text-light small mb-1">WhatsApp: 081274377963</p>
+        <p class="text-light small mb-1">Alamat Toko: Jl. Duta Raya Blok F2 No.22 (Kios B), Taman Cibodas, Tangerang</p>
+      </div>
+
+      <!-- SOSMED -->
+      <div class="col-md-3 mb-4">
+        <h6 class="fw-bold text-white mb-3">Ikuti Kami</h6>
+
+        <div class="d-flex flex-column gap-3">
+
+          <a href="https://www.instagram.com/toko.terangjayalistrik/" target="_blank"
+             class="footer-social d-flex align-items-center gap-2">
+            <img src="assets/images/instagramlogo.png" class="footer-sosmed-icon">
+            <span class="text-white">Instagram</span>
+          </a>
+
+          <a href="https://wa.me/6281274377963" target="_blank"
+             class="footer-social d-flex align-items-center gap-2">
+            <img src="assets/images/whatsapplogo.png" class="footer-sosmed-icon">
+            <span class="text-white">WhatsApp</span>
+          </a>
+
+          <!-- Shopee -->
+          <a href="https://shopee.co.id/thendy_rhenaldy" target="_blank" class="footer-social d-flex align-items-center gap-2">
+            <img src="assets/images/shopeelogo.png" alt="Shopee" class="footer-sosmed-icon">
+            <span class="text-white">Shopee</span>
+          </a>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="text-center text-light mt-4 small">
+      © 2025 Terang Jaya Listrik. All Rights Reserved.
+    </div>
+  </div>
+</footer>
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/script.js"></script>
+</body>
+</html>
